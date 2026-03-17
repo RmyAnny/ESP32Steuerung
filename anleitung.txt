@@ -1,0 +1,49 @@
+ESP32 Lueftersteuerung – Schritt-fuer-Schritt-Anleitung
+
+Ziel:
+Ein 12-V-Noctua-PC-Luefter (2-Pin, 40x20 mm) wird ueber einen ESP32
+per grafischer Anzeige und Touch-Pad EIN und AUS geschaltet
+PowerBank als Stromquelle
+
+1. Hardware-Uebersicht
+- ESP32 Dev Module (CH340C)
+- ST7789 Display (320x480)
+- 12-V-Noctua-Luefter (2-Pin)
+- Logic-Level N-MOSFET (z.B. AO3400 oder IRLZ44N)
+- Freilaufdiode (1N5819 oder 1N4007)
+- Widerstaende: 100 Ohm, 10 kOhm
+
+2. Sicherheitshinweise
+- ESP32 darf niemals direkt mit 12 V verbunden werden
+- GND von ESP32 und 12-V-Netzteil muss verbunden sein
+3. Schaltungsprinzip
+
+Der ESP32 steuert das Gate eines MOSFETs.
+Der MOSFET schaltet die Masse des Luefters (Low-Side-Switch).
+Anschlussuebersicht:
+- GPIO 26 -> 100 Ohm -> MOSFET Gate
+- 10 kOhm von Gate nach GND
+- Source -> GND
+- Drain -> Luefter Minus
+- Luefter Plus -> 12 V
+- Diode antiparallel zum Luefter
+
+4. Display-Pinbelegung (gegeben)
+TFT_MOSI = 13
+TFT_SCLK = 14
+TFT_CS = 15
+TFT_DC = 2
+TFT_RST = 12
+TFT_BL = 27
+
+5. Bedienkonzept
+- Touch-Pin T0 (GPIO 4) schaltet den Luefter
+- Display zeigt Status (AN / AUS)
+
+6. Arduino-Code siehe configs.cpp
+TFT eSPI Bibliothek installieren
+
+7. Hinweise
+- Touch-Schwelle ggf. kalibrieren
+- MOSFET sollte handwarm bleiben und nicht überhitzen
+Ende der Anleitung
